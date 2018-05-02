@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <link href="css/normalize.min.css" rel="stylesheet">
+  <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <section class="first-page">
+    <div class="first-page__wrapper">
+
+      <form @submit.prevent="registrationFormSubmit" v-if="!isMasterExist">
+
+        <fieldset>
+
+          <legend>New account</legend>
+
+          <div class="progress-bar">
+            <div class="progress" :style="progressWidth"></div>
+          </div>
+
+
+          <div class="input-container" v-for="(item, index) in registrationFields">
+
+            <label>{{item.name}}</label>
+
+            <input :type="item.type" :value="item.value" @input="registrationOnInput(index, $event.target.value)">
+
+            <span class="indicator" v-if="registrationIndicators[index].isFieldActivated" :class="registrationIndicators[index].isError ?
+                          'indicator--danger' : 'indicator--success'"></span>
+
+            <span class="notification" v-if="registrationIndicators[index].isFieldActivated" v-show="registrationIndicators[index].isError">
+                        Symbols count is 4-10 and only latin letters
+                    </span>
+          </div>
+        </fieldset>
+
+        <button class="submit" onclick="window.location.href='/home.html'" :disabled="registrationDone < registrationFields.length">
+                Send
+            </button>
+      </form>
+
+
+
+      <form @submit.prevent="loginFormSubmit = true" v-else>
+
+        <fieldset>
+
+          <legend>Log in</legend>
+
+
+          <div class="input-container" v-for="(item, index) in loginFields">
+
+            <label>{{item.name}}</label>
+
+            <input type="text" :value="item.value" @input="loginOnInput(index, $event.target.value)">
+
+            <span class="indicator" v-if="loginIndicators[index].isFieldActivated" :class="loginIndicators[index].isError ?
+                          'indicator--danger' : 'indicator--success'"></span>
+
+            <span class="notification" v-if="loginIndicators[index].isFieldActivated" v-show="loginIndicators[index].isError">
+                        Wrong {{item.name}}
+                    </span>
+
+          </div>
+
+        </fieldset>
+
+        <button class="submit" onclick="window.location.href='/home.html'" :disabled="loginDone < loginFields.length">
+                Log in
+            </button>
+
+      </form>
+
+    </div>
+  </section>
+
+
+  <script src="js/vue.js"></script>
+
+  <script>
+    new Vue({
+      el: '.first-page',
+      data: {
+        registrationFields: [{
+            name: 'Name',
+            value: '',
+            pattern: /^[a-zA-Z]{4,10}$/,
+            type: 'text'
+          },
+          {
+            name: 'Email',
+            value: '',
+            pattern: /^[a-zA-Z]{4,10}$/,
+            type: 'text'
+          },
+          {
+            name: 'Pass',
+            value: '',
+            pattern: /^[a-zA-Z]{4,10}$/,
+            type: 'text'
+          },
+          {
+            name: 'Confirm pass',
+            value: '',
+            pattern: /^[a-zA-Z]{4,10}$/,
+            type: 'text'
+          }
+        ],
+        loginFields: [{
+            name: 'Email',
+            value: '',
+            pattern: /^[a-zA-Z]{4,10}$/,
+            type: 'text'
+          },
+          {
+            name: 'Pass',
+            value: '',
+            pattern: /^[a-zA-Z]{4,10}$/,
+            type: 'text'
+          }
+        ],
+        masterDataInStorage: {},
+        masterData: {},
+        registrationIndicators: [],
+        loginIndicators: [],
+        accessForSubmit: false,
+        isMasterExist: false,
+        loginFormSubmit: false
+      },
+
+      created() {
+        this.masterDataInStorage = JSON.parse(localStorage.getItem("masterData"));
+        this.isMasterExist = JSON.parse(localStorage.getItem('masterExist'));
+      },
+
+      beforeMount() {
+        for (let i = 0; i < this.registrationFields.length; i++) {
+          this.registrationIndicators.push({
+            isError: true,
+            isFieldActivated: false
+          });
+        }
+
+        for (let i = 0; i < this.loginFields.length; i++) {
+          this.loginIndicators.push({
+            isError: true,
+            isFieldActivated: false
+          });
+        }
+      },
+      methods: {
+        registrationOnInput(index, value) {
+          let data = this.registrationFields[index];
+          let indicator = this.registrationIndicators[index];
+          data.value = value;
+          indicator.isError = !data.pattern.test(value);
+          indicator.isFieldActivated = true;
+
+          if (index == 3) {
+            if (this.registrationFields[3].value !== this.registrationFields[2].value) {
+              indicator.isError = true;
+            }
+          }
+        },
+
+        registrationFormSubmit() {
+          this.accessForSubmit = true;
+          this.masterData.masterName = this.registrationFields[0].value;
+          this.masterData.masterEmail = this.registrationFields[1].value;
+          this.masterData.masterPass = this.registrationFields[2].value;
+          localStorage.setItem("masterData", JSON.stringify(this.masterData));
+        },
+
+        loginOnInput(index, value) {
+          let data = this.loginFields[index];
+          let indicator = this.loginIndicators[index];
+          data.value = value;
+          indicator.isError = !data.pattern.test(value);
+          indicator.isFieldActivated = true;
+
+          if (index == 0) {
+            if (this.loginFields[0].value !== this.masterDataInStorage.masterEmail) {
+              indicator.isError = true;
+            }
+          } else if (index == 1) {
+            if (this.loginFields[1].value !== this.masterDataInStorage.masterPass) {
+              indicator.isError = true;
+            }
+          }
+        },
+
+      },
+
+      computed: {
+        registrationDone() {
+          let done = 0;
+          for (let i = 0; i < this.registrationIndicators.length; i++) {
+            if (!this.registrationIndicators[i].isError) {
+              done++;
+            }
+          }
+          return done;
+        },
+
+        loginDone() {
+          let done = 0;
+          for (let i = 0; i < this.loginIndicators.length; i++) {
+            if (!this.loginIndicators[i].isError) {
+              done++;
+            }
+          }
+          return done;
+        },
+
+        progressWidth() {
+          return {
+            width: (this.registrationDone / this.registrationFields.length * 100) + '%'
+          }
+        }
+
+      }
+    });
+  </script>
+</body>
+
+</html>
