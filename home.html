@@ -151,19 +151,19 @@
             name: 'Old pass',
             value: '',
             pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
+            type: "password"
           },
           {
             name: 'New pass',
             value: '',
             pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
+            type: "password"
           },
           {
             name: 'Confirm pass',
             value: '',
             pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
+            type: "password"
           }
         ],
         addSiteFields: [{
@@ -176,13 +176,13 @@
             name: 'Pass',
             value: '',
             pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
+            type: "password"
           },
           {
             name: 'Confirm pass',
             value: '',
             pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
+            type: "password"
           }
         ],
 
@@ -190,13 +190,13 @@
             name: 'New pass',
             value: '',
             pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
+            type: "password"
           },
           {
             name: 'Confirm pass',
             value: '',
             pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
+            type: "password"
           }
         ],
 
@@ -389,14 +389,14 @@
           }
         },
 
-          save() {
-              for (let i = 0; i < this.forChange.length; i++) {
-                  if (this.forChange[i].forIndex == true) {
-                      this.sites[i].pass = this.newSitePass[1].value;
-                      this.clickChangeBtn = false;
-                      this.forChange[i].forIndex = false;
-                  }
-              }
+        save() {
+          for (let i = 0; i < this.forChange.length; i++) {
+            if (this.forChange[i].forIndex == true) {
+              this.sites[i].pass = this.newSitePass[1].value;
+              this.clickChangeBtn = false;
+              this.forChange[i].forIndex = false;
+            }
+          }
 
           localStorage.setItem("sitesDB", JSON.stringify(this.sites));
           this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
