@@ -389,14 +389,14 @@
           }
         },
 
-        save() {
-          for (let i = 0; i < this.indicatorsForNewSite.length; i++) {
-            if (this.forChange[i].forIndex == true) {
-              this.sites[i].pass = this.newSitePass[1].value;
-              this.clickChangeBtn = false;
-              this.forChange[i].forIndex = false;
-            }
-          }
+          save() {
+              for (let i = 0; i < this.forChange.length; i++) {
+                  if (this.forChange[i].forIndex == true) {
+                      this.sites[i].pass = this.newSitePass[1].value;
+                      this.clickChangeBtn = false;
+                      this.forChange[i].forIndex = false;
+                  }
+              }
 
           localStorage.setItem("sitesDB", JSON.stringify(this.sites));
           this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
