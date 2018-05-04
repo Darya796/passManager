@@ -69,6 +69,40 @@ fieldset {
 .input-container input:focus {
   border-color: #f7f4f1;
 }
+.show-pass {
+  position: absolute;
+  top: 0;
+  right: 12%;
+  width: 30px;
+  height: 32px;
+  font-size: 0;
+  background-color: transparent;
+}
+.show-pass:disabled::before {
+  color: #999999;
+}
+.show-pass--open::before {
+  content: "\f06e";
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  color: white;
+  font-size: 18px;
+  font-family: FontAwesome;
+  width: 20px;
+  height: 20px;
+}
+.show-pass--close::before {
+  content: "\f070";
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  color: white;
+  font-size: 18px;
+  font-family: FontAwesome;
+  width: 20px;
+  height: 20px;
+}
 .notification {
   display: inline-block;
   margin: 5px auto -20px;

@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="format-detection" content="telephone=no">
   <link href="css/normalize.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
   <link href="css/style.min.css" rel="stylesheet">
 </head>
 
@@ -14,64 +15,104 @@
   <section class="first-page">
     <div class="first-page__wrapper">
 
-      <form @submit.prevent="registrationFormSubmit" v-if="!isMasterExist">
+      <form @submit.prevent="registrationFormSubmit"
+            v-if="!isMasterExist">
 
         <fieldset>
 
           <legend>New account</legend>
 
           <div class="progress-bar">
-            <div class="progress" :style="progressWidth"></div>
+            <div class="progress"
+                 :style="progressWidth"></div>
           </div>
 
 
-          <div class="input-container" v-for="(item, index) in registrationFields">
+          <div class="input-container"
+               v-for="(item, index) in registrationFields">
 
             <label>{{item.name}}</label>
 
-            <input :type="item.type" :value="item.value" @input="registrationOnInput(index, $event.target.value)">
+            <input :type="item.type"
+                   :value="item.value"
+                   @input="registrationOnInput(index, $event.target.value)">
 
-            <span class="indicator" v-if="registrationIndicators[index].isFieldActivated" :class="registrationIndicators[index].isError ?
+            <span class="indicator"
+                  v-if="registrationIndicators[index].isFieldActivated"
+                  :class="registrationIndicators[index].isError ?
                           'indicator--danger' : 'indicator--success'"></span>
 
-            <span class="notification" v-if="registrationIndicators[index].isFieldActivated" v-show="registrationIndicators[index].isError">
-                        Symbols count is 4-10 and only latin letters
-                    </span>
+            <span class="notification"
+                  v-if="registrationIndicators[index].isFieldActivated"
+                  v-show="registrationIndicators[index].isError">
+                        Symbols count is 4-10. Allowed latin letters of both registers and numbers 0-9
+            </span>
+
+            <button class="show-pass"
+                    type="button"
+                    v-show="registrationIndicators[index].isPass"
+                    @click="toggle(index)"
+                    :class="item.type == 'text' ?
+                          'show-pass--open' : 'show-pass--close'">
+              toggle
+            </button>
+
           </div>
         </fieldset>
 
-        <button class="submit" onclick="window.location.href='/home.html'" :disabled="registrationDone < registrationFields.length">
+        <button class="submit"
+                onclick="window.location.href='/home.html'"
+                :disabled="registrationDone < registrationFields.length">
                 Send
-            </button>
+        </button>
       </form>
 
 
 
-      <form @submit.prevent="loginFormSubmit = true" v-else>
+      <form @submit.prevent="loginFormSubmit = true"
+            v-else>
 
         <fieldset>
 
           <legend>Log in</legend>
 
 
-          <div class="input-container" v-for="(item, index) in loginFields">
+          <div class="input-container"
+               v-for="(item, index) in loginFields">
 
             <label>{{item.name}}</label>
 
-            <input type="text" :value="item.value" @input="loginOnInput(index, $event.target.value)">
+            <input :type="item.type"
+                   :value="item.value"
+                   @input="loginOnInput(index, $event.target.value)">
 
-            <span class="indicator" v-if="loginIndicators[index].isFieldActivated" :class="loginIndicators[index].isError ?
+            <span class="indicator"
+                  v-if="loginIndicators[index].isFieldActivated"
+                  :class="loginIndicators[index].isError ?
                           'indicator--danger' : 'indicator--success'"></span>
 
-            <span class="notification" v-if="loginIndicators[index].isFieldActivated" v-show="loginIndicators[index].isError">
+            <span class="notification"
+                  v-if="loginIndicators[index].isFieldActivated"
+                  v-show="loginIndicators[index].isError">
                         Wrong {{item.name}}
                     </span>
+
+            <button class="show-pass"
+                    type="button"
+                    v-show="loginIndicators[index].isPass"
+                    @click="toggle2(index)"
+                    :class="item.type == 'text' ?
+                          'show-pass--open' : 'show-pass--close'">
+              toggle
+            </button>
 
           </div>
 
         </fieldset>
 
-        <button class="submit" onclick="window.location.href='/home.html'" :disabled="loginDone < loginFields.length">
+        <button class="submit"
+                onclick="window.location.href='/home.html'"
+                :disabled="loginDone < loginFields.length">
                 Log in
             </button>
 
@@ -87,42 +128,44 @@
     new Vue({
       el: '.first-page',
       data: {
-        registrationFields: [{
+        registrationFields: [
+            {
             name: 'Name',
             value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
+            pattern: /^[a-zA-Z0-9]{4,10}$/,
             type: 'text'
           },
           {
             name: 'Email',
             value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
+            pattern: /^[a-zA-Z0-9]{4,10}$/,
             type: 'text'
           },
           {
             name: 'Pass',
             value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
+            pattern: /^[a-zA-Z0-9]{4,10}$/,
             type: 'password'
           },
           {
             name: 'Confirm pass',
             value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
+            pattern: /^[a-zA-Z0-9]{4,10}$/,
             type: 'password'
           }
         ],
-        loginFields: [{
+        loginFields: [
+            {
             name: 'Email',
             value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
+            pattern: /^[a-zA-Z0-9]{4,10}$/,
             type: 'text'
           },
           {
             name: 'Pass',
             value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: 'password'
+            pattern: /^[a-zA-Z0-9]{4,10}$/,
+              type: 'password'
           }
         ],
         masterDataInStorage: {},
@@ -143,15 +186,27 @@
         for (let i = 0; i < this.registrationFields.length; i++) {
           this.registrationIndicators.push({
             isError: true,
-            isFieldActivated: false
+            isFieldActivated: false,
+              isPass: false
           });
+
+            if(this.registrationFields[i].type == "password") {
+                this.registrationIndicators[i].isPass = true;
+
+            }
         }
 
         for (let i = 0; i < this.loginFields.length; i++) {
           this.loginIndicators.push({
             isError: true,
-            isFieldActivated: false
+            isFieldActivated: false,
+              isPass: false
           });
+
+            if(this.loginFields[i].type == "password") {
+                this.loginIndicators[i].isPass = true;
+
+            }
         }
       },
       methods: {
@@ -162,11 +217,14 @@
           indicator.isError = !data.pattern.test(value);
           indicator.isFieldActivated = true;
 
+
           if (index == 3) {
             if (this.registrationFields[3].value !== this.registrationFields[2].value) {
               indicator.isError = true;
             }
           }
+
+
         },
 
         registrationFormSubmit() {
@@ -194,6 +252,24 @@
             }
           }
         },
+
+          toggle(index) {
+            if(this.registrationFields[index].type == "password") {
+                this.registrationFields[index].type = 'text'
+            }
+            else {
+                this.registrationFields[index].type = 'password'
+            }
+          },
+
+          toggle2(index) {
+              if(this.loginFields[index].type == 'password') {
+                  this.loginFields[index].type = 'text'
+              }
+              else {
+                  this.loginFields[index].type = 'password'
+              }
+          }
 
       },
 

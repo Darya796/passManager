@@ -77,6 +77,44 @@ fieldset {
   }
 }
 
+.show-pass {
+position: absolute;
+  top: 0;
+  right: 12%;
+  width: 30px;
+  height: 32px;
+  font-size: 0;
+  background-color: transparent;
+
+  &:disabled::before {
+    color: #999999;
+  }
+
+  &--open::before {
+    content: "\f06e";
+    position: absolute;
+    top: 6px;
+    left: 5px;
+    color: white;
+    font-size: 18px;
+    font-family: FontAwesome;
+    width: 20px;
+    height: 20px;
+  }
+
+  &--close::before {
+    content: "\f070";
+    position: absolute;
+    top: 6px;
+    left: 5px;
+    color: white;
+    font-size: 18px;
+    font-family: FontAwesome;
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .notification {
   display: inline-block;
   margin: 5px auto -20px;
