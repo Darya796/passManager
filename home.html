@@ -362,6 +362,7 @@
 
                 for (let i = 0; i < this.changeMasterFields.length; i++) {
                     this.changeMasterFields[i].value = '';
+                    this.changeMasterFields[i].type = 'password';
                     this.indicatorsForMaster[i].isFieldActivated = false;
                     this.indicatorsForMaster[i].isError = true;
                     this.indicatorsForMaster[i].isClick = false;
@@ -376,6 +377,10 @@
                     this.indicatorsForNewSite[i].isFieldActivated = false;
                     this.indicatorsForNewSite[i].isError = true;
                     this.indicatorsForNewSite[i].isClick = false;
+
+                    if(i > 0) {
+                        this.addSiteFields[i].type = 'password';
+                    }
                 }
             },
 
@@ -526,6 +531,7 @@
 
                 for (let i = 0; i < this.newSitePass.length; i++) {
                     this.newSitePass[i].value = '';
+                    this.newSitePass[i].type = 'password';
                     this.indicatorsForNewPass[i].isFieldActivated = false;
                     this.indicatorsForNewPass[i].isError = true;
                     this.indicatorsForNewPass[i].isClick = false;
@@ -546,8 +552,10 @@
 
                 for (let i = 0; i < this.newSitePass.length; i++) {
                     this.newSitePass[i].value = '';
+                    this.newSitePass[i].type = 'password';
                     this.indicatorsForNewPass[i].isFieldActivated = false;
                     this.indicatorsForNewPass[i].isError = true;
+                    this.indicatorsForNewPass[i].isClick = false;
                 }
             },
             deleteSite(index) {
