@@ -51,7 +51,7 @@
             <button class="show-pass"
                     type="button"
                     v-show="registrationIndicators[index].isPass"
-                    @click="toggle(index)"
+                    @click="registrationPassToggle(index)"
                     :class="item.type == 'text' ?
                           'show-pass--open' : 'show-pass--close'">
               toggle
@@ -100,7 +100,7 @@
             <button class="show-pass"
                     type="button"
                     v-show="loginIndicators[index].isPass"
-                    @click="toggle2(index)"
+                    @click="loginPassToggle(index)"
                     :class="item.type == 'text' ?
                           'show-pass--open' : 'show-pass--close'">
               toggle
@@ -253,7 +253,7 @@
           }
         },
 
-          toggle(index) {
+          registrationPassToggle(index) {
             if(this.registrationFields[index].type == "password") {
                 this.registrationFields[index].type = 'text'
             }
@@ -262,7 +262,7 @@
             }
           },
 
-          toggle2(index) {
+          loginPassToggle(index) {
               if(this.loginFields[index].type == 'password') {
                   this.loginFields[index].type = 'text'
               }

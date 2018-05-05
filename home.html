@@ -2,457 +2,572 @@
 <html lang="ru">
 
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="format-detection" content="telephone=no">
-  <link href="css/normalize.min.css" rel="stylesheet">
-  <link href="css/style.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no">
+    <link href="css/normalize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/style.min.css" rel="stylesheet">
 </head>
 
 <body>
-  <section class="second-page">
+<section class="second-page">
     <div class="second-page__wrapper">
 
-      <h1>Welcome, {{remoteData.masterName}}!</h1>
+        <h1>Welcome, {{remoteData.masterName}}!</h1>
 
-      <div class="top-btn-container">
-        <button class="btn-change" type="button" @click="changeMasterClick">
-              Change master-pass
-          </button>
+        <div class="top-btn-container">
+            <button class="btn-change"
+                    type="button"
+                    @click="changeMasterClick">
+                Change master-pass
+            </button>
 
-        <button class="btn-add" type="button" @click="addSiteClick">
-              Add new site
-          </button>
-      </div>
-
-
-
-      <div class="form-container">
-        <form @submit.prevent="changeMasterSubmit" v-if="change">
-
-          <div class="input-container" v-for="(item, index) in changeMasterFields">
-            <label>{{item.name}}</label>
-
-            <input :type="item.type" :value="item.value" @input="onInputChange(index, $event.target.value)">
+            <button class="btn-add"
+                    type="button"
+                    @click="addSiteClick">
+                Add new site
+            </button>
+        </div>
 
 
-            <span class="indicator" v-if="indicatorsForMaster[index].isFieldActivated" :class="indicatorsForMaster[index].isError ?
+        <div class="form-container">
+            <form @submit.prevent="changeMasterSubmit"
+                  v-if="change">
+
+                <div class="input-container"
+                     v-for="(item, index) in changeMasterFields">
+                    <label>{{item.name}}</label>
+
+                    <input :type="item.type"
+                           :value="item.value"
+                           @input="onInputChange(index, $event.target.value)">
+
+
+                    <span class="indicator"
+                          v-if="indicatorsForMaster[index].isFieldActivated"
+                          :class="indicatorsForMaster[index].isError ?
                           'indicator--danger' : 'indicator--success'"></span>
 
-            <span class="notification" v-if="indicatorsForMaster[index].isFieldActivated" v-show="indicatorsForMaster[index].isError">
-                        Wrong. Symbols count is 4-10 and only latin letters
+                    <span class="notification"
+                          v-if="indicatorsForMaster[index].isFieldActivated"
+                          v-show="indicatorsForMaster[index].isError">
+                        Symbols count is 4-10. Allowed latin letters of both registers and numbers 0-9
                     </span>
-          </div>
 
-          <button class="submit" :disabled="changeDone < changeMasterFields.length">
+                    <button class="show-pass"
+                            type="button"
+                            v-show="indicatorsForMaster[index].isPass"
+                            @click="masterPassToggle(index)"
+                            :class="item.type == 'text' ?
+                          'show-pass--open' : 'show-pass--close'">
+                        toggle
+                    </button>
+                </div>
+
+                <button class="submit"
+                        :disabled="changeDone < changeMasterFields.length">
                     Save
                 </button>
 
-        </form>
-      </div>
+            </form>
+        </div>
 
 
-      <div class="form-container">
-        <form @submit.prevent="addSiteSubmit" v-if="clickAddBtn">
+        <div class="form-container">
+            <form @submit.prevent="addSiteSubmit"
+                  v-if="clickAddBtn">
 
-          <div class="input-container" v-for="(item, index) in addSiteFields">
-            <label>{{item.name}}</label>
+                <div class="input-container"
+                     v-for="(item, index) in addSiteFields">
+                    <label>{{item.name}}</label>
 
-            <input :type="item.type" :value="item.value" @input="newSiteOnInput(index, $event.target.value)">
+                    <input :type="item.type"
+                           :value="item.value"
+                           @input="newSiteOnInput(index, $event.target.value)">
 
 
-            <span class="indicator" v-if="indicatorsForNewSite[index].isFieldActivated" :class="indicatorsForNewSite[index].isError ?
+                    <span class="indicator"
+                          v-if="indicatorsForNewSite[index].isFieldActivated"
+                          :class="indicatorsForNewSite[index].isError ?
                           'indicator--danger' : 'indicator--success'"></span>
 
-            <span class="notification" v-if="indicatorsForNewSite[index].isFieldActivated" v-show="indicatorsForNewSite[index].isError">
-                        Symbols count is 4-10 and only latin letters
+                    <span class="notification"
+                          v-if="indicatorsForNewSite[index].isFieldActivated"
+                          v-show="indicatorsForNewSite[index].isError">
+                        Symbols count is 4-10. Allowed latin letters of both registers and numbers 0-9
                     </span>
 
-          </div>
-          <button class="submit" :disabled="addSiteDone < addSiteFields.length">
+                    <button class="show-pass"
+                            type="button"
+                            v-show="indicatorsForNewSite[index].isPass"
+                            @click="addSitePassToggle(index)"
+                            :class="item.type == 'text' ?
+                          'show-pass--open' : 'show-pass--close'">
+                        toggle
+                    </button>
+
+                </div>
+                <button class="submit"
+                        :disabled="addSiteDone < addSiteFields.length">
                     Add
                 </button>
-        </form>
-      </div>
+            </form>
+        </div>
 
 
+        <h2>Your sites</h2>
 
-      <h2>Your sites</h2>
+        <table class="sites-table">
+            <tr class="table-titles">
+                <td>Site name</td>
+                <td>Site pass</td>
+                <td>Options</td>
+            </tr>
 
-      <table class="sites-table">
-        <tr class="table-titles">
-          <td>Site name</td>
-          <td>Site pass</td>
-          <td>Options</td>
-        </tr>
+            <tr v-for="(item, index) in sites">
+                <td>{{item.siteName}}</td>
+                <td>{{item.pass}}</td>
 
-        <tr v-for="(item, index) in sites">
-          <td>{{item.siteName}}</td>
-          <td>{{item.pass}}</td>
+                <td>
+                    <button class="btn-change"
+                            type="button"
+                            @click="changeSiteBtn(index)">
+                        Change pass
+                    </button>
 
-          <td>
-            <button class="btn-change" type="button" @click="changeSiteBtn(index)">
-                            Change pass
-                        </button>
+                    <button class="btn-del"
+                            type="button"
+                            @click="deleteSite(index)">
+                        Delete site
+                    </button>
+                </td>
+            </tr>
+        </table>
 
-            <button class="btn-del" type="button" @click="deleteSite(index)">
-                            Delete site
-                        </button>
-          </td>
-        </tr>
-      </table>
+        <div class="popup"
+             v-if="clickChangeBtn">
+            <div class="popup__wrapper">
+                <form>
+                    <div class="input-container"
+                         v-for="(item, index) in newSitePass">
 
-      <div class="popup" v-if="clickChangeBtn">
-        <div class="popup__wrapper">
-          <form>
-            <div class="input-container" v-for="(item, index) in newSitePass">
+                        <input :type="item.type"
+                               :placeholder="item.name"
+                               :value="item.value"
+                               @input="onNewInput(index, $event.target.value)">
 
-              <input :type="item.type" :placeholder="item.name" :value="item.value" @input="onNewInput(index, $event.target.value)">
-
-              <span class="indicator" v-if="indicatorsForNewPass[index].isFieldActivated" :class="indicatorsForNewPass[index].isError ?
+                        <span class="indicator"
+                              v-if="indicatorsForNewPass[index].isFieldActivated"
+                              :class="indicatorsForNewPass[index].isError ?
                           'indicator--danger' : 'indicator--success'"></span>
 
-              <span class="notification" v-if="indicatorsForNewPass[index].isFieldActivated" v-show="indicatorsForNewPass[index].isError">
-                        Symbols count is 4-10 and only latin letters
+                        <span class="notification"
+                              v-if="indicatorsForNewPass[index].isFieldActivated"
+                              v-show="indicatorsForNewPass[index].isError">
+                            Symbols count is 4-10. Allowed latin letters of both registers and numbers 0-9
                     </span>
+
+                        <button class="show-pass"
+                                type="button"
+                                v-show="indicatorsForNewPass[index].isPass"
+                                @click="addNewPassToggle(index)"
+                                :class="item.type == 'text' ?
+                          'show-pass--open' : 'show-pass--close'">
+                            toggle
+                        </button>
+                    </div>
+                    <button class="btn-close"
+                            type="button"
+                            @click="close">
+                        Close
+                    </button>
+
+                    <button class="submit"
+                            type="button"
+                            @click="save"
+                            :disabled="doneNewPass < newSitePass.length">
+                        Save
+                    </button>
+                </form>
             </div>
-            <button class="btn-del" type="button" @click="close">
-                Close
-            </button>
-
-            <button class="submit" type="button" @click="save" :disabled="doneNewPass < newSitePass.length">
-                Save
-            </button>
-          </form>
         </div>
-      </div>
-      <div class="overlay" v-if="clickChangeBtn"></div>
+        <div class="overlay"
+             v-if="clickChangeBtn"></div>
 
-      <div class="bottom-btn-container">
-        <a href="index.html">Exit</a>
+        <div class="bottom-btn-container">
+            <a href="index.html">Exit</a>
 
-        <button class="btn-del" onclick="window.location.href='/index.html'" type="button" @click="delAccount">
-              Delete your account
-          </button>
-      </div>
+            <button class="btn-del"
+                    onclick="window.location.href='/index.html'"
+                    type="button"
+                    @click="delAccount">
+                Delete your account
+            </button>
+        </div>
 
     </div>
-  </section>
+</section>
 
 
-  <script src="js/vue.js"></script>
+<script src="js/vue.js"></script>
 
-  <script>
+<script>
     new Vue({
-      el: '.second-page',
-      data: {
-        changeMasterFields: [{
-            name: 'Old pass',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "password"
-          },
-          {
-            name: 'New pass',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "password"
-          },
-          {
-            name: 'Confirm pass',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "password"
-          }
-        ],
-        addSiteFields: [{
-            name: 'Site Name',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "text"
-          },
-          {
-            name: 'Pass',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "password"
-          },
-          {
-            name: 'Confirm pass',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "password"
-          }
-        ],
+        el: '.second-page',
+        data: {
+            changeMasterFields: [{
+                name: 'Old pass',
+                value: '',
+                pattern: /^[a-zA-Z0-9]{4,10}$/,
+                type: "password"
+            },
+                {
+                    name: 'New pass',
+                    value: '',
+                    pattern: /^[a-zA-Z0-9]{4,10}$/,
+                    type: "password"
+                },
+                {
+                    name: 'Confirm pass',
+                    value: '',
+                    pattern: /^[a-zA-Z0-9]{4,10}$/,
+                    type: "password"
+                }
+            ],
+            addSiteFields: [{
+                name: 'Site Name',
+                value: '',
+                pattern: /^[a-zA-Z0-9]{4,10}$/,
+                type: "text"
+            },
+                {
+                    name: 'Pass',
+                    value: '',
+                    pattern: /^[a-zA-Z0-9]{4,10}$/,
+                    type: "password"
+                },
+                {
+                    name: 'Confirm pass',
+                    value: '',
+                    pattern: /^[a-zA-Z0-9]{4,10}$/,
+                    type: "password"
+                }
+            ],
 
-        newSitePass: [{
-            name: 'New pass',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "password"
-          },
-          {
-            name: 'Confirm pass',
-            value: '',
-            pattern: /^[a-zA-Z]{4,10}$/,
-            type: "password"
-          }
-        ],
+            newSitePass: [{
+                name: 'New pass',
+                value: '',
+                pattern: /^[a-zA-Z0-9]{4,10}$/,
+                type: "password"
+            },
+                {
+                    name: 'Confirm pass',
+                    value: '',
+                    pattern: /^[a-zA-Z0-9]{4,10}$/,
+                    type: "password"
+                }
+            ],
 
-        indicatorsForNewSite: [],
-        sites: [],
-        indicatorsForNewPass: [],
-        indicatorsForMaster: [],
-        forChange: [],
-        remoteData: {},
-        remoteSitesDB: {},
-        change: false,
-        fieldFull: false,
-        clickAddBtn: false,
-        clickChangeBtn: false
-      },
-
-
-      created() {
-        this.remoteData = JSON.parse(localStorage.getItem("masterData"));
-        this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
-
-        if (this.remoteSitesDB !== null) {
-          this.sites = this.remoteSitesDB;
-        }
-      },
-
-
-      beforeMount() {
-        for (let i = 0; i < this.sites.length; i++) {
-          this.forChange.push({
-            forIndex: false
-          });
-        }
-
-        let checkRemoteData = this.remoteData;
-        if (checkRemoteData !== null) {
-          this.fieldFull = true;
-          localStorage.setItem("masterExist", JSON.stringify(this.fieldFull));
-        }
-
-
-        for (let i = 0; i < this.changeMasterFields.length; i++) {
-          this.indicatorsForMaster.push({
-            isError: true,
-            isFieldActivated: undefined
-          });
-        }
-
-
-        for (let i = 0; i < this.addSiteFields.length; i++) {
-          this.indicatorsForNewSite.push({
-            isError: true,
-            isFieldActivated: undefined
-          });
-        }
-
-        for (let i = 0; i < this.newSitePass.length; i++) {
-          this.indicatorsForNewPass.push({
-            isError: true,
-            isFieldActivated: false
-          });
-        }
-      },
-
-
-      methods: {
-        changeMasterClick() {
-          this.change = !this.change;
-
-          for (let i = 0; i < this.changeMasterFields.length; i++) {
-            this.changeMasterFields[i].value = '';
-            this.indicatorsForMaster[i].isFieldActivated = false;
-            this.indicatorsForMaster[i].isError = true;
-          }
+            indicatorsForNewSite: [],
+            sites: [],
+            indicatorsForNewPass: [],
+            indicatorsForMaster: [],
+            forChange: [],
+            remoteData: {},
+            remoteSitesDB: {},
+            change: false,
+            fieldFull: false,
+            clickAddBtn: false,
+            clickChangeBtn: false
         },
 
-        addSiteClick() {
-          this.clickAddBtn = !this.clickAddBtn;
 
-          for (let i = 0; i < this.addSiteFields.length; i++) {
-            this.addSiteFields[i].value = '';
-            this.indicatorsForNewSite[i].isFieldActivated = false;
-            this.indicatorsForNewSite[i].isError = true;
-          }
-        },
+        created() {
+            this.remoteData = JSON.parse(localStorage.getItem("masterData"));
+            this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
 
-        onInputChange(index, value) {
-          let data = this.changeMasterFields[index];
-          let indicator = this.indicatorsForMaster[index];
-          data.value = value;
-          indicator.isError = !data.pattern.test(value);
-          indicator.isFieldActivated = true;
-
-          if (index == 0) {
-            if (this.changeMasterFields[0].value !== this.remoteData.masterPass) {
-              indicator.isError = true;
+            if (this.remoteSitesDB !== null) {
+                this.sites = this.remoteSitesDB;
             }
-          } else if (index == 2) {
-            if (this.changeMasterFields[2].value !== this.changeMasterFields[1].value) {
-              indicator.isError = true;
+        },
+
+
+        beforeMount() {
+            for (let i = 0; i < this.sites.length; i++) {
+                this.forChange.push({
+                    forIndex: false
+                });
             }
-          }
-        },
 
-        changeMasterSubmit() {
-          let newMasterData = {};
-          newMasterData.masterName = this.remoteData.masterName;
-          newMasterData.masterEmail = this.remoteData.masterEmail;
-          newMasterData.masterPass = this.changeMasterFields[2].value;
-
-          localStorage.setItem("masterData", JSON.stringify(newMasterData));
-          this.remoteData = JSON.parse(localStorage.getItem("masterData"));
-
-          this.change = false;
-
-          for (let i = 0; i < this.changeMasterFields.length; i++) {
-            this.changeMasterFields[i].value = '';
-            this.indicatorsForMaster[i].isFieldActivated = false;
-            this.indicatorsForMaster[i].isError = true;
-          }
-        },
-
-        newSiteOnInput(index, value) {
-          let data = this.addSiteFields[index];
-          let indicator = this.indicatorsForNewSite[index];
-          data.value = value;
-          indicator.isError = !data.pattern.test(value);
-          indicator.isFieldActivated = true;
-
-          if (index == 2) {
-            if (this.addSiteFields[2].value !== this.addSiteFields[1].value) {
-              indicator.isError = true;
+            let checkRemoteData = this.remoteData;
+            if (checkRemoteData !== null) {
+                this.fieldFull = true;
+                localStorage.setItem("masterExist", JSON.stringify(this.fieldFull));
             }
-          }
-        },
 
-        addSiteSubmit() {
-          let siteData = {};
-          siteData.siteName = this.addSiteFields[0].value;
-          siteData.pass = this.addSiteFields[1].value;
-          this.sites.push(siteData);
 
-          localStorage.setItem("sitesDB", JSON.stringify(this.sites));
-          this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
+            for (let i = 0; i < this.changeMasterFields.length; i++) {
+                this.indicatorsForMaster.push({
+                    isError: true,
+                    isFieldActivated: undefined,
+                    isPass: false
+                });
 
-          let forChanges = {};
-          for (let i = 0; i < this.sites.length; i++) {
-            forChanges.forIndex = false;
-          }
-          this.forChange.push(forChanges);
+                if(this.changeMasterFields[i].type == "password") {
+                    this.indicatorsForMaster[i].isPass = true;
 
-          for (let i = 0; i < this.addSiteFields.length; i++) {
-            this.addSiteFields[i].value = '';
-            this.indicatorsForNewSite[i].isFieldActivated = false;
-            this.indicatorsForNewSite[i].isError = true;
-          }
-
-          this.clickAddBtn = false;
-        },
-
-        changeSiteBtn(index) {
-          this.forChange[index].forIndex = true;
-          this.clickChangeBtn = true;
-        },
-
-        onNewInput(index, value) {
-          let siteChangePass = this.newSitePass[index];
-          let indicator = this.indicatorsForNewPass[index];
-          siteChangePass.value = value;
-          indicator.isError = !siteChangePass.pattern.test(value);
-          indicator.isFieldActivated = true;
-
-          if (index == 1) {
-            if (this.newSitePass[1].value !== this.newSitePass[0].value) {
-              indicator.isError = true;
+                }
             }
-          }
-        },
 
-        close() {
-          for (let i = 0; i < this.forChange.length; i++) {
-            this.forChange[i].forIndex = false;
-          }
-          this.clickChangeBtn = false;
 
-          for (let i = 0; i < this.newSitePass.length; i++) {
-            this.newSitePass[i].value = '';
-            this.indicatorsForNewPass[i].isFieldActivated = false;
-            this.indicatorsForNewPass[i].isError = true;
-          }
-        },
+            for (let i = 0; i < this.addSiteFields.length; i++) {
+                this.indicatorsForNewSite.push({
+                    isError: true,
+                    isFieldActivated: undefined,
+                    isPass: false
+                });
 
-        save() {
-          for (let i = 0; i < this.forChange.length; i++) {
-            if (this.forChange[i].forIndex == true) {
-              this.sites[i].pass = this.newSitePass[1].value;
-              this.clickChangeBtn = false;
-              this.forChange[i].forIndex = false;
+                if(this.addSiteFields[i].type == "password") {
+                    this.indicatorsForNewSite[i].isPass = true;
+
+                }
             }
-          }
 
-          localStorage.setItem("sitesDB", JSON.stringify(this.sites));
-          this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
+            for (let i = 0; i < this.newSitePass.length; i++) {
+                this.indicatorsForNewPass.push({
+                    isError: true,
+                    isFieldActivated: false,
+                    isPass: false
+                });
 
-          for (let i = 0; i < this.newSitePass.length; i++) {
-            this.newSitePass[i].value = '';
-            this.indicatorsForNewPass[i].isFieldActivated = false;
-            this.indicatorsForNewPass[i].isError = true;
-          }
-        },
-        deleteSite(index) {
-          this.sites.splice(index, 1);
-          localStorage.setItem("sitesDB", JSON.stringify(this.sites));
-          this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
+                if(this.newSitePass[i].type == "password") {
+                    this.indicatorsForNewPass[i].isPass = true;
+
+                }
+            }
         },
 
-        delAccount() {
-          this.fieldFull = false;
-          localStorage.removeItem("masterData");
-          localStorage.removeItem("sitesDB");
-          localStorage.setItem("masterExist", JSON.stringify(this.fieldFull));
+
+        methods: {
+            changeMasterClick() {
+                this.change = !this.change;
+
+                for (let i = 0; i < this.changeMasterFields.length; i++) {
+                    this.changeMasterFields[i].value = '';
+                    this.indicatorsForMaster[i].isFieldActivated = false;
+                    this.indicatorsForMaster[i].isError = true;
+                }
+            },
+
+            addSiteClick() {
+                this.clickAddBtn = !this.clickAddBtn;
+
+                for (let i = 0; i < this.addSiteFields.length; i++) {
+                    this.addSiteFields[i].value = '';
+                    this.indicatorsForNewSite[i].isFieldActivated = false;
+                    this.indicatorsForNewSite[i].isError = true;
+                }
+            },
+
+            onInputChange(index, value) {
+                let data = this.changeMasterFields[index];
+                let indicator = this.indicatorsForMaster[index];
+                data.value = value;
+                indicator.isError = !data.pattern.test(value);
+                indicator.isFieldActivated = true;
+
+                if (index == 0) {
+                    if (this.changeMasterFields[0].value !== this.remoteData.masterPass) {
+                        indicator.isError = true;
+                    }
+                } else if (index == 2) {
+                    if (this.changeMasterFields[2].value !== this.changeMasterFields[1].value) {
+                        indicator.isError = true;
+                    }
+                }
+            },
+
+            masterPassToggle(index) {
+                if(this.changeMasterFields[index].type == "password") {
+                    this.changeMasterFields[index].type = 'text'
+                }
+                else {
+                    this.changeMasterFields[index].type = 'password'
+                }
+            },
+
+            changeMasterSubmit() {
+                let newMasterData = {};
+                newMasterData.masterName = this.remoteData.masterName;
+                newMasterData.masterEmail = this.remoteData.masterEmail;
+                newMasterData.masterPass = this.changeMasterFields[2].value;
+
+                localStorage.setItem("masterData", JSON.stringify(newMasterData));
+                this.remoteData = JSON.parse(localStorage.getItem("masterData"));
+
+                this.change = false;
+
+                for (let i = 0; i < this.changeMasterFields.length; i++) {
+                    this.changeMasterFields[i].value = '';
+                    this.indicatorsForMaster[i].isFieldActivated = false;
+                    this.indicatorsForMaster[i].isError = true;
+                }
+            },
+
+            newSiteOnInput(index, value) {
+                let data = this.addSiteFields[index];
+                let indicator = this.indicatorsForNewSite[index];
+                data.value = value;
+                indicator.isError = !data.pattern.test(value);
+                indicator.isFieldActivated = true;
+
+                if (index == 2) {
+                    if (this.addSiteFields[2].value !== this.addSiteFields[1].value) {
+                        indicator.isError = true;
+                    }
+                }
+            },
+
+            addSitePassToggle(index) {
+                if(this.addSiteFields[index].type == "password") {
+                    this.addSiteFields[index].type = 'text'
+                }
+                else {
+                    this.addSiteFields[index].type = 'password'
+                }
+            },
+
+            addSiteSubmit() {
+                let siteData = {};
+                siteData.siteName = this.addSiteFields[0].value;
+                siteData.pass = this.addSiteFields[1].value;
+                this.sites.push(siteData);
+
+                localStorage.setItem("sitesDB", JSON.stringify(this.sites));
+                this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
+
+                let forChanges = {};
+                for (let i = 0; i < this.sites.length; i++) {
+                    forChanges.forIndex = false;
+                }
+                this.forChange.push(forChanges);
+
+                for (let i = 0; i < this.addSiteFields.length; i++) {
+                    this.addSiteFields[i].value = '';
+                    this.indicatorsForNewSite[i].isFieldActivated = false;
+                    this.indicatorsForNewSite[i].isError = true;
+                }
+
+                this.clickAddBtn = false;
+            },
+
+            changeSiteBtn(index) {
+                this.forChange[index].forIndex = true;
+                this.clickChangeBtn = true;
+            },
+
+            onNewInput(index, value) {
+                let siteChangePass = this.newSitePass[index];
+                let indicator = this.indicatorsForNewPass[index];
+                siteChangePass.value = value;
+                indicator.isError = !siteChangePass.pattern.test(value);
+                indicator.isFieldActivated = true;
+
+                if (index == 1) {
+                    if (this.newSitePass[1].value !== this.newSitePass[0].value) {
+                        indicator.isError = true;
+                    }
+                }
+            },
+
+            addNewPassToggle(index) {
+                if(this.newSitePass[index].type == "password") {
+                    this.newSitePass[index].type = 'text'
+                }
+                else {
+                    this.newSitePass[index].type = 'password'
+                }
+            },
+
+            close() {
+                for (let i = 0; i < this.forChange.length; i++) {
+                    this.forChange[i].forIndex = false;
+                }
+                this.clickChangeBtn = false;
+
+                for (let i = 0; i < this.newSitePass.length; i++) {
+                    this.newSitePass[i].value = '';
+                    this.indicatorsForNewPass[i].isFieldActivated = false;
+                    this.indicatorsForNewPass[i].isError = true;
+                }
+            },
+
+            save() {
+                for (let i = 0; i < this.forChange.length; i++) {
+                    if (this.forChange[i].forIndex == true) {
+                        this.sites[i].pass = this.newSitePass[1].value;
+                        this.clickChangeBtn = false;
+                        this.forChange[i].forIndex = false;
+                    }
+                }
+
+                localStorage.setItem("sitesDB", JSON.stringify(this.sites));
+                this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
+
+                for (let i = 0; i < this.newSitePass.length; i++) {
+                    this.newSitePass[i].value = '';
+                    this.indicatorsForNewPass[i].isFieldActivated = false;
+                    this.indicatorsForNewPass[i].isError = true;
+                }
+            },
+            deleteSite(index) {
+                this.sites.splice(index, 1);
+                localStorage.setItem("sitesDB", JSON.stringify(this.sites));
+                this.remoteSitesDB = JSON.parse(localStorage.getItem("sitesDB"));
+            },
+
+            delAccount() {
+                this.fieldFull = false;
+                localStorage.removeItem("masterData");
+                localStorage.removeItem("sitesDB");
+                localStorage.setItem("masterExist", JSON.stringify(this.fieldFull));
+            }
+        },
+
+
+        computed: {
+            changeDone() {
+                let done = 0;
+                for (let i = 0; i < this.indicatorsForMaster.length; i++) {
+                    if (!this.indicatorsForMaster[i].isError) {
+                        done++;
+                    }
+                }
+                return done;
+            },
+            addSiteDone() {
+                let done = 0;
+                for (let i = 0; i < this.indicatorsForNewSite.length; i++) {
+                    if (!this.indicatorsForNewSite[i].isError) {
+                        done++;
+                    }
+                }
+                return done;
+            },
+            doneNewPass() {
+                let done = 0;
+                for (let i = 0; i < this.indicatorsForNewPass.length; i++) {
+                    if (!this.indicatorsForNewPass[i].isError) {
+                        done++;
+                    }
+                }
+                return done;
+            }
         }
-      },
-
-
-      computed: {
-        changeDone() {
-          let done = 0;
-          for (let i = 0; i < this.indicatorsForMaster.length; i++) {
-            if (!this.indicatorsForMaster[i].isError) {
-              done++;
-            }
-          }
-          return done;
-        },
-        addSiteDone() {
-          let done = 0;
-          for (let i = 0; i < this.indicatorsForNewSite.length; i++) {
-            if (!this.indicatorsForNewSite[i].isError) {
-              done++;
-            }
-          }
-          return done;
-        },
-        doneNewPass() {
-          let done = 0;
-          for (let i = 0; i < this.indicatorsForNewPass.length; i++) {
-            if (!this.indicatorsForNewPass[i].isError) {
-              done++;
-            }
-          }
-          return done;
-        }
-      }
     });
-  </script>
+</script>
 </body>
 
 </html>

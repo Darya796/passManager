@@ -214,6 +214,10 @@ button {
 .btn-del {
   background: crimson;
 }
+.btn-close {
+  background: transparent;
+  border: 2px solid #5e5e5e;
+}
 .form-container {
   margin-top: 25px;
 }
@@ -312,7 +316,7 @@ button {
   background-color: #353535;
   width: 88%;
 }
-.popup button {
+.popup .input-container + button {
   width: 30%;
   margin-right: 20px;
 }
@@ -401,7 +405,7 @@ button {
     background-color: #353535;
     width: 78%;
   }
-  .popup button {
+  .popup .input-container + button {
     width: 30%;
     margin-right: 20px;
   }
