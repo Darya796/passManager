@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bea0cfe1-e6ce-4519-b927-4cc228d43823" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/less/scaffolding.less" beforeDir="false" afterPath="$PROJECT_DIR$/less/scaffolding.less" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,20 +22,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="home.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="557" column="65" selection-start-line="557" selection-start-column="65" selection-end-line="557" selection-end-column="65" />
+            <state relative-caret-position="261">
+              <caret line="567" column="39" selection-start-line="567" selection-start-column="39" selection-end-line="567" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scaffolding.less" pinned="false" current-in-tab="false">
+      <file leaf-file-name="scaffolding.less" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/less/scaffolding.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="491" column="14" lean-forward="true" selection-start-line="491" selection-start-column="14" selection-end-line="491" selection-end-column="14" />
+            <state relative-caret-position="206">
+              <caret line="87" column="18" lean-forward="true" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -57,8 +56,8 @@
         <option value="$PROJECT_DIR$/less/registry.less" />
         <option value="$PROJECT_DIR$/less/style.less" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/less/scaffolding.less" />
         <option value="$PROJECT_DIR$/home.html" />
+        <option value="$PROJECT_DIR$/less/scaffolding.less" />
       </list>
     </option>
   </component>
@@ -182,12 +181,12 @@
       <workItem from="1525166133822" duration="17301000" />
       <workItem from="1525264536285" duration="2813000" />
       <workItem from="1525270038783" duration="11545000" />
-      <workItem from="1525512935068" duration="6617000" />
+      <workItem from="1525512935068" duration="7219000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135125000" />
+    <option name="totallyTimeSpent" value="135727000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-5" y="0" width="810" height="728" extended-state="0" />
@@ -198,7 +197,7 @@
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32849365" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.0" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.19782214" />
       <window_info id="Gulp" order="2" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.2393617" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
@@ -448,17 +447,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/less/scaffolding.less">
+    <entry file="file://$PROJECT_DIR$/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="491" column="14" lean-forward="true" selection-start-line="491" selection-start-column="14" selection-end-line="491" selection-end-column="14" />
+        <state relative-caret-position="261">
+          <caret line="567" column="39" selection-start-line="567" selection-start-column="39" selection-end-line="567" selection-end-column="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/home.html">
+    <entry file="file://$PROJECT_DIR$/less/scaffolding.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="557" column="65" selection-start-line="557" selection-start-column="65" selection-end-line="557" selection-end-column="65" />
+        <state relative-caret-position="206">
+          <caret line="87" column="18" lean-forward="true" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
         </state>
       </provider>
     </entry>

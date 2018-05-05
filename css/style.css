@@ -77,6 +77,12 @@ fieldset {
   height: 32px;
   font-size: 0;
   background-color: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.show-pass:disabled {
+  cursor: default;
+  pointer-events: none;
 }
 .show-pass:disabled::before {
   color: #999999;

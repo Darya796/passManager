@@ -85,6 +85,13 @@ position: absolute;
   height: 32px;
   font-size: 0;
   background-color: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+
+  &:disabled {
+    cursor: default;
+    pointer-events: none;
+  }
 
   &:disabled::before {
     color: #999999;
