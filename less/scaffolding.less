@@ -117,7 +117,9 @@ position: absolute;
 
 .notification {
   display: inline-block;
+  width: 100%;
   margin: 5px auto -20px;
+  text-align: center;
   font-size: 13px;
   letter-spacing: 0.3px;
   color: rgba(220, 20, 60, 1);
@@ -329,10 +331,11 @@ button {
  &__wrapper {
    box-sizing: border-box;
    position: fixed;
-   top: 270px;
+   top: 100px;
    left: 50%;
    transform: translateX(-50%);
    width: 90%;
+   max-width: 365px;
    padding: 35px 20px;
 
    z-index: 40;
@@ -432,6 +435,21 @@ button {
     }
   }
 
+  .show-pass {
+    width: 40px;
+    height: 42px;
+
+    &--open::before {
+      top: 11px;
+      left: 10px;
+    }
+
+    &--close::before {
+      top: 11px;
+      left: 10px;
+    }
+  }
+
   .submit:disabled {
     padding: 15px 0;
     margin: 20px auto 0;
@@ -446,7 +464,8 @@ button {
 
   .popup {
    &__wrapper {
-     width: 40%;
+     width: 365px;
+     max-width: unset;
      padding: 35px 38px;
 
      z-index: 40;
@@ -465,6 +484,10 @@ button {
      width: 30%;
      margin-right: 20px;
    }
+
+    & .input-container > .show-pass {
+      right: 22%;
+      }
 
    & .submit {
      display: inline-block;

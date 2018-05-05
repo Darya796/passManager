@@ -105,7 +105,9 @@ fieldset {
 }
 .notification {
   display: inline-block;
+  width: 100%;
   margin: 5px auto -20px;
+  text-align: center;
   font-size: 13px;
   letter-spacing: 0.3px;
   color: #dc143c;
@@ -300,11 +302,12 @@ button {
 .popup__wrapper {
   box-sizing: border-box;
   position: fixed;
-  top: 270px;
+  top: 100px;
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
   width: 90%;
+  max-width: 365px;
   padding: 35px 20px;
   z-index: 40;
   text-align: center;
@@ -382,6 +385,18 @@ button {
     border: 1px solid #00AA00;
     border-radius: 50%;
   }
+  .show-pass {
+    width: 40px;
+    height: 42px;
+  }
+  .show-pass--open::before {
+    top: 11px;
+    left: 10px;
+  }
+  .show-pass--close::before {
+    top: 11px;
+    left: 10px;
+  }
   .submit:disabled {
     padding: 15px 0;
     margin: 20px auto 0;
@@ -393,7 +408,8 @@ button {
     width: 75%;
   }
   .popup__wrapper {
-    width: 40%;
+    width: 365px;
+    max-width: unset;
     padding: 35px 38px;
     z-index: 40;
     text-align: center;
@@ -408,6 +424,9 @@ button {
   .popup .input-container + button {
     width: 30%;
     margin-right: 20px;
+  }
+  .popup .input-container > .show-pass {
+    right: 22%;
   }
   .popup .submit {
     display: inline-block;

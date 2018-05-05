@@ -61,7 +61,8 @@
                             v-show="indicatorsForMaster[index].isPass"
                             @click="masterPassToggle(index)"
                             :class="item.type == 'text' ?
-                          'show-pass--open' : 'show-pass--close'">
+                          'show-pass--open' : 'show-pass--close'"
+                            :disabled="!indicatorsForMaster[index].isClick">
                         toggle
                     </button>
                 </div>
@@ -104,7 +105,8 @@
                             v-show="indicatorsForNewSite[index].isPass"
                             @click="addSitePassToggle(index)"
                             :class="item.type == 'text' ?
-                          'show-pass--open' : 'show-pass--close'">
+                          'show-pass--open' : 'show-pass--close'"
+                            :disabled="!indicatorsForNewSite[index].isClick">
                         toggle
                     </button>
 
@@ -174,7 +176,8 @@
                                 v-show="indicatorsForNewPass[index].isPass"
                                 @click="addNewPassToggle(index)"
                                 :class="item.type == 'text' ?
-                          'show-pass--open' : 'show-pass--close'">
+                          'show-pass--open' : 'show-pass--close'"
+                                :disabled="!indicatorsForNewPass[index].isClick">
                             toggle
                         </button>
                     </div>
@@ -312,10 +315,11 @@
                 this.indicatorsForMaster.push({
                     isError: true,
                     isFieldActivated: undefined,
-                    isPass: false
+                    isPass: false,
+                    isClick: undefined
                 });
 
-                if(this.changeMasterFields[i].type == "password") {
+                if (this.changeMasterFields[i].type == "password") {
                     this.indicatorsForMaster[i].isPass = true;
 
                 }
@@ -326,10 +330,11 @@
                 this.indicatorsForNewSite.push({
                     isError: true,
                     isFieldActivated: undefined,
-                    isPass: false
+                    isPass: false,
+                    isClick: undefined
                 });
 
-                if(this.addSiteFields[i].type == "password") {
+                if (this.addSiteFields[i].type == "password") {
                     this.indicatorsForNewSite[i].isPass = true;
 
                 }
@@ -339,10 +344,11 @@
                 this.indicatorsForNewPass.push({
                     isError: true,
                     isFieldActivated: false,
-                    isPass: false
+                    isPass: false,
+                    isClick: undefined
                 });
 
-                if(this.newSitePass[i].type == "password") {
+                if (this.newSitePass[i].type == "password") {
                     this.indicatorsForNewPass[i].isPass = true;
 
                 }
@@ -358,6 +364,7 @@
                     this.changeMasterFields[i].value = '';
                     this.indicatorsForMaster[i].isFieldActivated = false;
                     this.indicatorsForMaster[i].isError = true;
+                    this.indicatorsForMaster[i].isClick = false;
                 }
             },
 
@@ -368,6 +375,7 @@
                     this.addSiteFields[i].value = '';
                     this.indicatorsForNewSite[i].isFieldActivated = false;
                     this.indicatorsForNewSite[i].isError = true;
+                    this.indicatorsForNewSite[i].isClick = false;
                 }
             },
 
@@ -382,15 +390,22 @@
                     if (this.changeMasterFields[0].value !== this.remoteData.masterPass) {
                         indicator.isError = true;
                     }
-                } else if (index == 2) {
+                }
+                else if (index == 2) {
                     if (this.changeMasterFields[2].value !== this.changeMasterFields[1].value) {
                         indicator.isError = true;
                     }
                 }
+
+                if (this.changeMasterFields[index].value !== '') {
+                    this.indicatorsForMaster[index].isClick = true;
+                } else {
+                    this.indicatorsForMaster[index].isClick = false;
+                }
             },
 
             masterPassToggle(index) {
-                if(this.changeMasterFields[index].type == "password") {
+                if (this.changeMasterFields[index].type == "password") {
                     this.changeMasterFields[index].type = 'text'
                 }
                 else {
@@ -428,10 +443,16 @@
                         indicator.isError = true;
                     }
                 }
+
+                if (this.addSiteFields[index].value !== '') {
+                    this.indicatorsForNewSite[index].isClick = true;
+                } else {
+                    this.indicatorsForNewSite[index].isClick = false;
+                }
             },
 
             addSitePassToggle(index) {
-                if(this.addSiteFields[index].type == "password") {
+                if (this.addSiteFields[index].type == "password") {
                     this.addSiteFields[index].type = 'text'
                 }
                 else {
@@ -480,10 +501,16 @@
                         indicator.isError = true;
                     }
                 }
+
+                if (this.newSitePass[index].value !== '') {
+                    this.indicatorsForNewPass[index].isClick = true;
+                } else {
+                    this.indicatorsForNewPass[index].isClick = false;
+                }
             },
 
             addNewPassToggle(index) {
-                if(this.newSitePass[index].type == "password") {
+                if (this.newSitePass[index].type == "password") {
                     this.newSitePass[index].type = 'text'
                 }
                 else {
@@ -501,6 +528,7 @@
                     this.newSitePass[i].value = '';
                     this.indicatorsForNewPass[i].isFieldActivated = false;
                     this.indicatorsForNewPass[i].isError = true;
+                    this.indicatorsForNewPass[i].isClick = false;
                 }
             },
 
